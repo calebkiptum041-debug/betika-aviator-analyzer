@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Betika Aviator Next-Round Analyzer</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: white;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 1000px;
+      margin: 30px auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #aab3c5;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #151c32;
+      border-radius: 15px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #39445f;
+      background: #0d1427;
+      color: white;
+      font-size: 16px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #19c37d;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #13a86b;
+    }
+
+    .prediction {
+      text-align: center;
+      padding: 25px;
+      border-radius: 15px;
+      background: #10182d;
+    }
+
+    .prediction h2 {
+      margin-top: 0;
+    }
+
+    .range {
+      font-size: 38px;
+      font-weight: bold;
+      margin: 15px 0;
+      color: #19c37d;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      background: #0d1427;
+      padding: 18px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      margin-top: 8px;
+    }
+
+    .warning {
+      color: #ffcc66;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .round-list {
+      line-height: 1.8;
+      color: #c7cfdf;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>✈️ Betika Aviator Analyzer</h1>
+
+  <div class="subtitle">
+    Next-Round Statistical Analyzer
+  </div>
+
+  <div class="card">
+
+    <h2>Enter Previous Aviator Results</h2>
+
+    <p>
+      Enter recent multipliers separated by commas.
+      Example:
+    </p>
+
+    <textarea id="resultsInput">1.24, 1.08, 2.31, 1.56, 3.42, 1.12, 2.05, 1.44, 4.21, 1.18</textarea>
+
+    <button onclick="analyze()">ANALYZE NEXT ROUND</button>
+
+  </div>
+
+
+  <div class="card prediction">
+
+    <h2>Next-Round Estimate</h2>
+
+    <div id="predictionRange" class="range">
+      --
+    </div>
+
+    <div id="predictionText">
+      Enter results and click Analyze.
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>Statistics</h2>
+
+    <div class="stats">
+
+      <div class="stat">
+        Rounds
+        <strong id="roundCount">0</strong>
+      </div>
+
+      <div class="stat">
+        Average
+        <strong id="average">0.00×</strong>
+      </div>
+
+      <div class="stat">
+        Lowest
+        <strong id="lowest">0.00×</strong>
+      </div>
+
+      <div class="stat">
+        Highest
+        <strong id="highest">0.00×</strong>
+      </div>
+
+      <div class="stat">
+        Below 2×
+        <strong id="below2">0%</strong>
+      </div>
+
+      <div class="stat">
+        2× or Higher
+        <strong id="above2">0%</strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>Recent Rounds</h2>
+
+    <div id="roundList" class="round-list">
+      No data yet.
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h3>Important</h3>
+
+    <div class="warning">
+      This analyzer uses historical results to produce a statistical estimate.
+      It cannot know or guarantee the exact result of the next Aviator round.
+      Actual game outcomes may be random and previous rounds do not guarantee
+      future results.
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+function analyze() {
+
+  const input = document.getElementById("resultsInput").value;
+
+  let numbers = input
+    .split(",")
+    .map(x => parseFloat(x.trim()))
+    .filter(x => !isNaN(x) && x > 0);
+
+  if (numbers.length === 0) {
+    alert("Please enter valid multiplier results.");
+    return;
+  }
+
+  const count = numbers.length;
+
+  const total = numbers.reduce((a,b) => a + b, 0);
+
+  const average = total / count;
+
+  const lowest = Math.min(...numbers);
+
+  const highest = Math.max(...numbers);
+
+  const below2 = numbers.filter(x => x < 2).length;
+
+  const above2 = numbers.filter(x => x >= 2).length;
+
+  const belowPercentage = (below2 / count) * 100;
+
+  const abovePercentage = (above2 / count) * 100;
+
+
+  /*
+    Statistical estimate.
+
+    This is deliberately an estimate based on the
+    historical sample rather than a guaranteed prediction.
+  */
+
+  let center = average;
+
+  if (center < 1.50) {
+    center = 1.50;
+  }
+
+  if (center > 3.00) {
+    center = 3.00;
+  }
+
+
+  let lower = Math.max(1.10, center - 0.50);
+
+  let upper = Math.min(5.00, center + 0.50);
+
+
+  document.getElementById("predictionRange").textContent =
+    lower.toFixed(2) + "× – " + upper.toFixed(2) + "×";
+
+
+  document.getElementById("predictionText").textContent =
+    "Historical-data estimate — not a guaranteed prediction.";
+
+
+  document.getElementById("roundCount").textContent =
+    count;
+
+
+  document.getElementById("average").textContent =
+    average.toFixed(2) + "×";
+
+
+  document.getElementById("lowest").textContent =
+    lowest.toFixed(2) + "×";
+
+
+  document.getElementById("highest").textContent =
+    highest.toFixed(2) + "×";
+
+
+  document.getElementById("below2").textContent =
+    belowPercentage.toFixed(1) + "%";
+
+
+  document.getElementById("above2").textContent =
+    abovePercentage.toFixed(1) + "%";
+
+
+  const recent = numbers.slice(-10).reverse();
+
+  document.getElementById("roundList").innerHTML =
+    recent.map((value, index) =>
+      "Round " + (index + 1) + ": <strong>" +
+      value.toFixed(2) + "×</strong>"
+    ).join("<br>");
+
+}
+
+</script>
+
+</body>
+</html>
