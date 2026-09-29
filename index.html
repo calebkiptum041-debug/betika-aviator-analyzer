@@ -1,333 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Betika Aviator Next-Round Analyzer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Aviator Analyzer</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: white;
-    }
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#07111f;
+    color:white;
+}
 
-    .container {
-      width: 95%;
-      max-width: 1000px;
-      margin: 30px auto;
-    }
+.container{
+    width:92%;
+    max-width:900px;
+    margin:30px auto;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 8px;
-    }
+h1{
+    text-align:center;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #aab3c5;
-      margin-bottom: 30px;
-    }
+.subtitle{
+    text-align:center;
+    color:#9daabd;
+}
 
-    .card {
-      background: #151c32;
-      border-radius: 15px;
-      padding: 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    }
+.card{
+    background:#111d30;
+    padding:20px;
+    margin-top:20px;
+    border-radius:15px;
+}
 
-    textarea {
-      width: 100%;
-      min-height: 130px;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #39445f;
-      background: #0d1427;
-      color: white;
-      font-size: 16px;
-      resize: vertical;
-    }
+textarea{
+    width:100%;
+    height:120px;
+    box-sizing:border-box;
+    background:#07111f;
+    color:white;
+    border:1px solid #33445d;
+    border-radius:10px;
+    padding:15px;
+    font-size:16px;
+}
 
-    button {
-      width: 100%;
-      margin-top: 15px;
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      background: #19c37d;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button{
+    width:100%;
+    margin-top:15px;
+    padding:16px;
+    border:0;
+    border-radius:10px;
+    background:#16c784;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-    button:hover {
-      background: #13a86b;
-    }
+button:active{
+    transform:scale(.98);
+}
 
-    .prediction {
-      text-align: center;
-      padding: 25px;
-      border-radius: 15px;
-      background: #10182d;
-    }
+.prediction{
+    text-align:center;
+}
 
-    .prediction h2 {
-      margin-top: 0;
-    }
+.range{
+    font-size:38px;
+    font-weight:bold;
+    color:#16c784;
+    margin:20px 0;
+}
 
-    .range {
-      font-size: 38px;
-      font-weight: bold;
-      margin: 15px 0;
-      color: #19c37d;
-    }
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-top: 20px;
-    }
+.stat{
+    background:#07111f;
+    padding:18px;
+    text-align:center;
+    border-radius:10px;
+}
 
-    .stat {
-      background: #0d1427;
-      padding: 18px;
-      border-radius: 10px;
-      text-align: center;
-    }
+.stat-number{
+    display:block;
+    font-size:24px;
+    font-weight:bold;
+    margin-top:8px;
+}
 
-    .stat strong {
-      display: block;
-      font-size: 24px;
-      margin-top: 8px;
-    }
+.error{
+    color:#ff7777;
+    margin-top:10px;
+}
 
-    .warning {
-      color: #ffcc66;
-      line-height: 1.5;
-      font-size: 14px;
-    }
-
-    .round-list {
-      line-height: 1.8;
-      color: #c7cfdf;
-    }
-  </style>
+.warning{
+    color:#ffc857;
+    font-size:14px;
+    line-height:1.5;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>✈️ Betika Aviator Analyzer</h1>
+<h1>✈️ Betika Aviator Analyzer</h1>
 
-  <div class="subtitle">
-    Next-Round Statistical Analyzer
-  </div>
+<p class="subtitle">
+Next-Round Statistical Analyzer
+</p>
 
-  <div class="card">
+<div class="card">
 
-    <h2>Enter Previous Aviator Results</h2>
+<h2>Recent Results</h2>
 
-    <p>
-      Enter recent multipliers separated by commas.
-      Example:
-    </p>
+<p>Enter multipliers separated by commas.</p>
 
-    <textarea id="resultsInput">1.24, 1.08, 2.31, 1.56, 3.42, 1.12, 2.05, 1.44, 4.21, 1.18</textarea>
+<textarea id="results">1.24, 1.08, 2.31, 1.56, 3.42, 1.12, 2.05, 1.44, 4.21, 1.18</textarea>
 
-    <button onclick="analyze()">ANALYZE NEXT ROUND</button>
+<button id="analyzeButton">
+ANALYZE NEXT ROUND
+</button>
 
-  </div>
+<div id="error" class="error"></div>
 
-
-  <div class="card prediction">
-
-    <h2>Next-Round Estimate</h2>
-
-    <div id="predictionRange" class="range">
-      --
-    </div>
-
-    <div id="predictionText">
-      Enter results and click Analyze.
-    </div>
-
-  </div>
+</div>
 
 
-  <div class="card">
+<div class="card prediction">
 
-    <h2>Statistics</h2>
+<h2>Next-Round Estimate</h2>
 
-    <div class="stats">
+<div id="range" class="range">
+--
+</div>
 
-      <div class="stat">
-        Rounds
-        <strong id="roundCount">0</strong>
-      </div>
+<div id="message">
+Waiting for analysis...
+</div>
 
-      <div class="stat">
-        Average
-        <strong id="average">0.00×</strong>
-      </div>
-
-      <div class="stat">
-        Lowest
-        <strong id="lowest">0.00×</strong>
-      </div>
-
-      <div class="stat">
-        Highest
-        <strong id="highest">0.00×</strong>
-      </div>
-
-      <div class="stat">
-        Below 2×
-        <strong id="below2">0%</strong>
-      </div>
-
-      <div class="stat">
-        2× or Higher
-        <strong id="above2">0%</strong>
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 
-  <div class="card">
+<div class="card">
 
-    <h2>Recent Rounds</h2>
+<h2>Statistics</h2>
 
-    <div id="roundList" class="round-list">
-      No data yet.
-    </div>
+<div class="stats">
 
-  </div>
+<div class="stat">
+Rounds
+<span id="count" class="stat-number">0</span>
+</div>
+
+<div class="stat">
+Average
+<span id="average" class="stat-number">0.00×</span>
+</div>
+
+<div class="stat">
+Lowest
+<span id="lowest" class="stat-number">0.00×</span>
+</div>
+
+<div class="stat">
+Highest
+<span id="highest" class="stat-number">0.00×</span>
+</div>
+
+<div class="stat">
+Below 2×
+<span id="below" class="stat-number">0%</span>
+</div>
+
+<div class="stat">
+2× or higher
+<span id="above" class="stat-number">0%</span>
+</div>
+
+</div>
+
+</div>
 
 
-  <div class="card">
+<div class="card">
 
-    <h3>Important</h3>
+<h3>Important</h3>
 
-    <div class="warning">
-      This analyzer uses historical results to produce a statistical estimate.
-      It cannot know or guarantee the exact result of the next Aviator round.
-      Actual game outcomes may be random and previous rounds do not guarantee
-      future results.
-    </div>
+<p class="warning">
+This is a statistical analyzer. It cannot know or guarantee
+the exact result of the next Aviator round. Historical results
+do not guarantee future results.
+</p>
 
-  </div>
+</div>
 
 </div>
 
 
 <script>
 
-function analyze() {
-
-  const input = document.getElementById("resultsInput").value;
-
-  let numbers = input
-    .split(",")
-    .map(x => parseFloat(x.trim()))
-    .filter(x => !isNaN(x) && x > 0);
-
-  if (numbers.length === 0) {
-    alert("Please enter valid multiplier results.");
-    return;
-  }
-
-  const count = numbers.length;
-
-  const total = numbers.reduce((a,b) => a + b, 0);
-
-  const average = total / count;
-
-  const lowest = Math.min(...numbers);
-
-  const highest = Math.max(...numbers);
-
-  const below2 = numbers.filter(x => x < 2).length;
-
-  const above2 = numbers.filter(x => x >= 2).length;
-
-  const belowPercentage = (below2 / count) * 100;
-
-  const abovePercentage = (above2 / count) * 100;
+document
+.getElementById("analyzeButton")
+.addEventListener("click", analyze);
 
 
-  /*
-    Statistical estimate.
+function analyze(){
 
-    This is deliberately an estimate based on the
-    historical sample rather than a guaranteed prediction.
-  */
+    const error = document.getElementById("error");
 
-  let center = average;
-
-  if (center < 1.50) {
-    center = 1.50;
-  }
-
-  if (center > 3.00) {
-    center = 3.00;
-  }
+    error.textContent = "";
 
 
-  let lower = Math.max(1.10, center - 0.50);
-
-  let upper = Math.min(5.00, center + 0.50);
-
-
-  document.getElementById("predictionRange").textContent =
-    lower.toFixed(2) + "× – " + upper.toFixed(2) + "×";
+    const input =
+        document.getElementById("results").value;
 
 
-  document.getElementById("predictionText").textContent =
-    "Historical-data estimate — not a guaranteed prediction.";
+    const numbers =
+        input
+        .split(",")
+        .map(function(value){
+
+            return parseFloat(value.trim());
+
+        })
+        .filter(function(value){
+
+            return Number.isFinite(value) && value > 0;
+
+        });
 
 
-  document.getElementById("roundCount").textContent =
-    count;
+    if(numbers.length === 0){
+
+        error.textContent =
+            "Please enter valid multiplier numbers.";
+
+        return;
+    }
 
 
-  document.getElementById("average").textContent =
-    average.toFixed(2) + "×";
+    const count = numbers.length;
 
 
-  document.getElementById("lowest").textContent =
-    lowest.toFixed(2) + "×";
+    const total =
+        numbers.reduce(function(sum,value){
+
+            return sum + value;
+
+        },0);
 
 
-  document.getElementById("highest").textContent =
-    highest.toFixed(2) + "×";
+    const average =
+        total / count;
 
 
-  document.getElementById("below2").textContent =
-    belowPercentage.toFixed(1) + "%";
+    const lowest =
+        Math.min.apply(null,numbers);
 
 
-  document.getElementById("above2").textContent =
-    abovePercentage.toFixed(1) + "%";
+    const highest =
+        Math.max.apply(null,numbers);
 
 
-  const recent = numbers.slice(-10).reverse();
+    const below2 =
+        numbers.filter(function(value){
 
-  document.getElementById("roundList").innerHTML =
-    recent.map((value, index) =>
-      "Round " + (index + 1) + ": <strong>" +
-      value.toFixed(2) + "×</strong>"
-    ).join("<br>");
+            return value < 2;
+
+        }).length;
+
+
+    const above2 =
+        numbers.filter(function(value){
+
+            return value >= 2;
+
+        }).length;
+
+
+    const belowPercent =
+        (below2 / count) * 100;
+
+
+    const abovePercent =
+        (above2 / count) * 100;
+
+
+    /*
+    Statistical estimate only.
+    */
+
+    let center = average;
+
+
+    if(center < 1.5){
+
+        center = 1.5;
+
+    }
+
+
+    if(center > 3){
+
+        center = 3;
+
+    }
+
+
+    const lower =
+        Math.max(1.10,center - 0.50);
+
+
+    const upper =
+        Math.min(5.00,center + 0.50);
+
+
+    document
+    .getElementById("range")
+    .textContent =
+        lower.toFixed(2) +
+        "× – " +
+        upper.toFixed(2) +
+        "×";
+
+
+    document
+    .getElementById("message")
+    .textContent =
+        "Historical-data estimate — not guaranteed.";
+
+
+    document
+    .getElementById("count")
+    .textContent =
+        count;
+
+
+    document
+    .getElementById("average")
+    .textContent =
+        average.toFixed(2) + "×";
+
+
+    document
+    .getElementById("lowest")
+    .textContent =
+        lowest.toFixed(2) + "×";
+
+
+    document
+    .getElementById("highest")
+    .textContent =
+        highest.toFixed(2) + "×";
+
+
+    document
+    .getElementById("below")
+    .textContent =
+        belowPercent.toFixed(1) + "%";
+
+
+    document
+    .getElementById("above")
+    .textContent =
+        abovePercent.toFixed(1) + "%";
 
 }
 
